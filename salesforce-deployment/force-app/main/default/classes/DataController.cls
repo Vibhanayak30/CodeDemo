@@ -1,0 +1,15 @@
+public with sharing class DataController {
+
+    @AuraEnabled(Cacheable = true)
+        // public static List<Account> getAccounts() {
+
+        //     List<Account> accList = [SELECT Id, Name, Phone, Industry, Type, Website, Description FROM Account WHERE Phone != null AND Industry != null ORDER BY CreatedDate DESC ];
+
+        //     return accList;
+        // }
+        public static List<Task> getTask() {              
+            List<Task> taskList = [SELECT Id,Status,WhatId,Priority,ActivityDate,Subject FROM Task];
+
+            return taskList;
+        }        
+    }
