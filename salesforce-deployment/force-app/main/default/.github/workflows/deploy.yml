@@ -1,0 +1,26 @@
+name: Deploy to Target Org
+ 
+on:
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      # 1. Checkout repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+ 
+      # 2. Install Salesforce CLI
+      - name: Install Salesforce CLI
+        run: npm install --global sfdx-cli
+ 
+      # 3. Authenticate to target org using GitHub Secret
+      - name: Authenticate to target org
+        run: echo "${{ secrets.SF_TARGET_AUTH_URL }}" > auth.txt && sfdx auth:sfdxurl:store -f auth.txt -a targetOrg
+ 
+      # 4. Deploy metadata from manifest/package.xml
+      - name: Deploy metadata
+        run: sfdx force:source:deploy -u  -x vibha.nayak14@nuware.com manifest/package.xml --ignorewarnings
+ 
